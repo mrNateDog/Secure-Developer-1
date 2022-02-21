@@ -7,28 +7,28 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
   <title>ToDo List</title>
 </head>
-<body class="grey lighten-3"">
+<body class="grey lighten-3">
 
   <!-- NAVBAR -->
-  <nav class="z-depth-0 grey lighten-4">
+  <nav class="z-depth-1 grey lighten-4">
     <div class="nav-wrapper container">
       <a href="#" class="brand-logo">
         <img src="img/todolist_logo.png" style="width: 180px; margin-top: 10px;">
       </a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li class="logged-in">
-            <a href="#" class="grey-text modal-trigger" data-target="modal-account">Account</a>
+ <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li class="logged-in" style="display: none;">
+            <a href="#" class="grey-text darken-4 modal-trigger" data-target="modal-account">Account</a>
           </li>
-          <li class="logged-in">
+          <li class="logged-in" style="display: none;"> 
             <a href="#" class="grey-text" id="logout">Logout</a>
           </li>
-          <li class="logged-in">
-            <a href="#" class="grey-text modal-trigger" data-target="modal-create">Create Guide</a>
+          <li class="logged-in" style="display: none;">
+            <a href="#" class="grey-text modal-trigger" data-target="modal-create">New Item</a>
           </li>
-          <li class="logged-out">
+          <li class="logged-out" style="display: none;">
             <a href="#" class="grey-text modal-trigger" data-target="modal-login">Login</a>
           </li>
-          <li class="logged-out">
+          <li class="logged-out" style="display: none;">
             <a href="#" class="grey-text modal-trigger" data-target="modal-signup">Sign up</a>
           </li>
         </span>
@@ -36,7 +36,7 @@
     </div>
   </nav>
 
-  <!-- SIGN UP MODAL -->
+   <!-- SIGN UP MODAL -->
   <div id="modal-signup" class="modal">
     <div class="modal-content">
       <h4>Sign up</h4><br />
@@ -49,7 +49,11 @@
           <input type="password" id="signup-password" required />
           <label for="signup-password">Choose password</label>
         </div>
-        <button class="btn yellow darken-2 z-depth-0">Sign up</button>
+        <div class="input-field">
+          <input type="text" id="signup-bio" required />
+          <label for="signup-bio">One Line Bio</label>
+        </div>
+        <button class="btn grey darken-2 z-depth-0">Sign up</button>
       </form>
     </div>
   </div>
@@ -67,7 +71,7 @@
           <input type="password" id="login-password" required />
           <label for="login-password">Your password</label>
         </div>
-        <button class="btn yellow darken-2 z-depth-0">Login</button>
+        <button class="btn grey darken-2 z-depth-0">Login</button>
       </form>
     </div>
   </div>
@@ -93,18 +97,27 @@
           <textarea id="content" class="materialize-textarea" required></textarea>
           <label for="content">Guide Content</label>
         </div>
-        <button class="btn yellow darken-2 z-depth-0">Create</button>
+        <div class="input-field">
+          <p>
+            <label for="done">
+              <input type="checkbox" id="done" />
+              <span>Task Completed</span>
+            </label>
+          </p>
+        </div>
+        </p>
+        <button class="btn grey darken-2 z-depth-0">Create</button>
       </form>
     </div>
   </div>
 
 
-  <div class="container" style="margin-top: 40px;">
-    <ul class="collapsible z-depth-0 guides" style="border: none;">
-
-    </ul>
+  <div class="container" style="margin-top: 20px;">
+    <card class="collapsible z-depth-0 guides" style="border: none;">
+    </card></div>;
   </div>
-
+  <div class="center-align count">
+  </div>
    <!-- FIREBASE -->
   <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
@@ -135,5 +148,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <script src="scripts/auth.js"></script>
   <script src="scripts/index.js"></script>
+   <script src="scripts/guides.js"></script>
 </body>
 </html>

@@ -1,42 +1,47 @@
-//get content from firebase db
-
-db.collection("guides") //fb db name
-  .get() //tells us to get the guides
-  .then((snapshot) => {
-    //asyc command - when completed
-    console.log(snapshot.docs);
-    setupGuides(snapshot.docs);
-  });
-
-// listen for auth status change -when auth change, this function will run (login/logout)
+// listen for auth status changes
+//.onSnapshot-- active listener - instead of .get and .then - shows what the db is
 auth.onAuthStateChanged((user) => {
+  console.log(user);
   if (user) {
-    console.log("user logged in: ", user);
+    db.collection("guides").onSnapshot((snapshot) => {
+      setupGuides(snapshot.docs);
+      setupUI(user);
+    }),
+      (err) => {
+        console.log(err.message);
+      };
   } else {
-    console.log("user logged out");
+    setupUI();
+    setupGuides([]);
   }
 });
 
 // signup
 const signupForm = document.querySelector("#signup-form");
 signupForm.addEventListener("submit", (e) => {
-  e.preventDefault(); //want this so the page doesn't refresh
+  e.preventDefault();
 
   // get user info
   const email = signupForm["signup-email"].value;
   const password = signupForm["signup-password"].value;
-  console.log(email, password);
+  const bio = signupForm["signup-bio"].value;
 
   // sign up the user
-  auth.createUserWithEmailAndPassword(email, password).then((cred) => {
-    // console.log(cred.user);
-
+  auth
+    .createUserWithEmailAndPassword(email, password)
+    .then((cred) => {
+      return db.collection("users").doc(cred.user.uid).set({
+        bio: signupForm["signup-bio"].value,
+      });
+    })
     // close the signup modal & reset form
-    const modal = document.querySelector("#modal-signup");
-    M.Modal.getInstance(modal).close();
-    signupForm.reset();
-  });
+    .then(() => {
+      const modal = document.querySelector("#modal-signup");
+      M.Modal.getInstance(modal).close();
+      signupForm.reset();
+    });
 });
+
 // logout
 const logout = document.querySelector("#logout");
 logout.addEventListener("click", (e) => {
@@ -55,8 +60,6 @@ loginForm.addEventListener("submit", (e) => {
 
   // log the user in
   auth.signInWithEmailAndPassword(email, password).then((cred) => {
-    //console.log(cred.user);
-
     // close the signup modal & reset form
     const modal = document.querySelector("#modal-login");
     M.Modal.getInstance(modal).close();
